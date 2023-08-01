@@ -1,10 +1,16 @@
 package com.codersguidebook.notes
 
 import android.content.Context
+import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.preference.PreferenceManager
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.codersguidebook.notes.databinding.ActivityMainBinding
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -17,6 +23,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var adapter: NoteAdapter
     private lateinit var binding: ActivityMainBinding
+    private lateinit var sharedPreferences: SharedPreferences
 
     companion object {
         private const val FILEPATH = "notes.json"
@@ -35,6 +42,20 @@ class MainActivity : AppCompatActivity() {
 
         adapter.noteList = retrieveNotes()
         adapter.notifyItemRangeInserted(0, adapter.noteList.size)
+
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        val nightThemeSelected = sharedPreferences.getBoolean("theme", false)
+        if (nightThemeSelected) AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        else AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+
+        val showDividingLines = sharedPreferences.getBoolean("dividingLines", false)
+        if (showDividingLines) binding.recyclerView.addItemDecoration(DividerItemDecoration(this, LinearLayoutManager.VERTICAL))
+        else if (binding.recyclerView.itemDecorationCount > 0) binding.recyclerView.removeItemDecorationAt(0)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -44,11 +65,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
-            R.id.action_settings -> true
+            R.id.action_settings -> {
+                val intent = Intent(this, SettingsActivity::class.java)
+                startActivity(intent)
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }
