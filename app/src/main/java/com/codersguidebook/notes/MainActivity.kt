@@ -9,6 +9,7 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.PreferenceManager
+import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.codersguidebook.notes.databinding.ActivityMainBinding
@@ -37,8 +38,12 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(binding.toolbar)
 
         binding.fab.setOnClickListener {
-            NewNote().show(supportFragmentManager, "")
+            NewNote().show(supportFragmentManager, null)
         }
+
+        adapter = NoteAdapter(this)
+        binding.recyclerView.adapter = adapter
+        binding.recyclerView.itemAnimator = DefaultItemAnimator()
 
         adapter.noteList = retrieveNotes()
         adapter.notifyItemRangeInserted(0, adapter.noteList.size)
