@@ -1,17 +1,10 @@
 <resources>
     <!-- Base application theme. -->
-    <style name="Theme.Notes" parent="Theme.MaterialComponents.DayNight">
+    <style name="Base.Theme.Notes" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorSecondary</item>
         <item name="colorSecondary">@color/colorSecondary</item>
     </style>
 
-    <style name="Theme.Notes.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
-
-    <style name="Theme.Notes.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
-    <style name="Theme.Notes.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="Theme.Notes" parent="Base.Theme.Notes" />
 </resources>
